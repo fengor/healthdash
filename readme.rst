@@ -9,11 +9,11 @@ Bodyweight
 Tracked variables are total bodyweight in kg and bodyfat percentage. Calculated from that is the lean body mass.
 
 not yet implemented:
-GET    http://localhost:8000/weight/ - lists all weight entries
-GET    http://localhost:8000/weight/YYYY-MM-DD - shows the weight entry for the specified date
-GET    http://localhost:8000/weight/new - shows the weight entry form
-POST   http://localhost:8000/weight/ - creates a new weight entry
-PUT    http://localhost:8000/weight/YYYY-MM-DD - updates the weight entry for the specified date
-DELETE http://localhost:8000/weight/YYYY-MM-DD - deletes the weight entry for the specified date
+* GET    http://localhost:8000/weight/ - lists all weight entries
+* GET    http://localhost:8000/weight/YYYY-MM-DD - shows the weight entry for the specified date
+* GET    http://localhost:8000/weight/new - shows the weight entry form
+* POST   http://localhost:8000/weight/ - creates a new weight entry
+* PUT    http://localhost:8000/weight/YYYY-MM-DD - updates the weight entry for the specified date
+* DELETE http://localhost:8000/weight/YYYY-MM-DD - deletes the weight entry for the specified date
 
 
