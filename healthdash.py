@@ -43,8 +43,11 @@ def add_weight():
 
     return "entry added for %s with weight %f kg, bodyfat %f. Computed lean mass: %fkg\n" % (date,weight,bodyfat,leanbodymass)
 
-@route('/weight/:datestring#\d{4]-\d{2}-\d{2}#', method='GET')
+#@route('/weight/:datestring#\d{4}-d{2}-\d{2}#', method='GET')
+@route('/weight/:datestring', method='GET')
 def show_weight_for_date(datestring):
+    if re.match("\d{4}-\d{2}-\d{2}",datestring) is None:
+        return "Please use the YYYY-MM-DD format"
     weightentry = load_weight(datestring)
     return str(weightentry)
 
