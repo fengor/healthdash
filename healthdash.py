@@ -1,4 +1,4 @@
-from bottle import route, run
+from bottle import route, run, request
 import sqlite3
 import re
 
@@ -20,10 +20,28 @@ def load_weight(datestring):
     result = c.fetchall()
     return result
 
-@route('/weight')
+def insert_weight_entry(date, weight, bodyfat, leanbodymass):
+    conn = sqlite3.connect('healthdash.db')
+    c = conn.cursor()
+    c.execute("INSERT INTO bodyweight (date, weight, bodyfat, leanbodymass) VALUES (?,?,?,?)", (date, weight, bodyfat, leanbodymass))
+    conn.commit()
+
+@route('/weight', method='GET')
 def weight():
     weightlist = load_all_weights()
     return str(weightlist)
+
+@route('/weight', method='POST')
+def add_weight():
+    #TODO add parameter validation
+    date = request.POST.get('date','').strip()
+    weight = float(request.POST.get('weight',0))
+    bodyfat = float(request.POST.get('bodyfat',0))
+    leanbodymass = weight - (weight * bodyfat / 100)
+
+    insert_weight_entry(date, weight, bodyfat, leanbodymass)
+
+    return "entry added for %s with weight %f kg, bodyfat %f. Computed lean mass: %fkg\n" % (date,weight,bodyfat,leanbodymass)
 
 @route('/weight/:datestring#\d{4]-\d{2}-\d{2}#', method='GET')
 def show_weight_for_date(datestring):

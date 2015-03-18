@@ -1,0 +1,5 @@
+Stuff still to refactor
+=======================
+
+healthdash.py:    #TODO add parameter validation
+initdb.py:    #TODO refactor table: date column should be unique
