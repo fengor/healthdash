@@ -1,6 +1,7 @@
 from bottle import route, run, request
 import sqlite3
 import re
+import pygal
 
 @route('/hello')
 def hello():
@@ -10,6 +11,13 @@ def load_all_weights():
     conn = sqlite3.connect('healthdash.db')
     c = conn.cursor()
     c.execute("SELECT date, weight, bodyfat, leanbodymass FROM bodyweight")
+    result = c.fetchall()
+    return result
+
+def get_all_weights():
+    conn = sqlite3.connect('healthdash.db')
+    c = conn.cursor()
+    c.execute("SELECT weight FROM bodyweight")
     result = c.fetchall()
     return result
 
@@ -31,6 +39,20 @@ def delete_weight_entry(date, ):
     c = conn.cursor()
     c.execute("DELETE FROM bodyweight WHERE date = ?", (date, ))
     conn.commit()
+
+@route('/dash/weight')
+def weight_graph():
+
+    weight_entries = load_all_weights() 
+    print(weight_entries)
+    weight_chart = pygal.Line()
+    weight_chart.title = "Bodyweight"
+    weight_chart.x_labels = [i[0] for i in weight_entries]
+    weight_chart.add('total bw', [i[1] for i in weight_entries])
+    weight_chart.add('lean body mass', [i[3] for i in weight_entries])
+    
+    return weight_chart.render()
+    #return "foobar"
 
 @route('/weight', method='GET')
 def weight():
